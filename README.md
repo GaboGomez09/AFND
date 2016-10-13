@@ -1,2 +1,4 @@
 # AFND
-Autómata Finito No Determinista Dinámico, implementado en C
+Autómata Finito No Determinista Dinámico, implementado en C.
+
+
