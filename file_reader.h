@@ -66,6 +66,9 @@ void LeerLinea(char **buffer, FILE *filePointer){
 
 void ConvertirNumeros(int **arreglo,char *buffer, int *arregloLength){
   char numero[100];
+  for (size_t l = 0; l < 100; l++) {
+    numero[l] = 0;
+  }
   int k = 0, arregloSize = sizeof(int);
   *arreglo = (int*)malloc(arregloSize);
   for (size_t i = 0; i < strlen(buffer); i++) {
@@ -74,11 +77,13 @@ void ConvertirNumeros(int **arreglo,char *buffer, int *arregloLength){
       if (buffer[i] == '\000') {
         break;
       }else{
-        numero[j++] = buffer[i++];
+        numero[j] = buffer[i];
+        i++;
+        j++;
       }
     }
     (*arreglo)[k] = atoi(numero);
-    *arreglo = (int*)realloc(*arreglo, arregloSize + 2);
+    *arreglo = (int*)realloc(*arreglo, arregloSize + 4);
     k++;
     *arregloLength = k;
 

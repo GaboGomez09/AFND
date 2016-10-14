@@ -8,35 +8,21 @@
 int main(int argc, char const *argv[]){
   char cadena[100];
   //printf("Por favor ingrese la cadena que desea validar.\n");
-  //scanf("%s", cadena);
+  scanf("%s", cadena);
+  Nodo* nodo;
+  nodo = crearNodo(cadena);
 
   char *alfabeto, *transition;
   int *estados,  estadoInicial, *estadosFinales,  *estadosOrigen, *estadosDestino;
   int estadoLength, estadosFinalesLength, origenLength, destinoLength;
   LeerArchivo(&alfabeto, &transition, &estados, &estadoInicial, &estadosFinales, &estadosOrigen, &estadosDestino, &estadoLength, &estadosFinalesLength, &origenLength, &destinoLength);
-  crearEstados(alfabeto, estadoInicial, estados, estadoLength, transition, estadosOrigen, estadosDestino, origenLength, destinoLength);
-  /*
-  printf("Conjunto de estados ");
-  for (size_t i = 0; i < estadoLength; i++) {
-    printf("%d ", estados[i]);
-  }
-  printf("\n");
 
-  printf("Alfabeto: %s\n", alfabeto);
 
-  printf("Estado inicial: %d\n", estadoInicial);
+  Estado* initialState;
+  initialState = crearEstados(alfabeto, estadoInicial, estados, estadoLength, transition, estadosOrigen, estadosDestino, origenLength, destinoLength);
 
-  printf("Estados finales ");
-  for (size_t i = 0; i < estadosFinalesLength; i++) {
-    printf("%d ", estadosFinales[i]);
-  }
-  printf("\n");
 
-  printf("Transition: %s\n", transition);
-  */
-  //crearEstados();
-  //crearNodo(cadena);
-  //recorrerEstados();
+  recorrerEstados(nodo, initialState);
 
   return 0;
 }

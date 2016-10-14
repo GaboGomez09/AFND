@@ -1,6 +1,8 @@
 #ifndef automata
 #define automata
 
+#include <string.h>
+
 typedef struct estado Estado;
 typedef struct nodo Nodo;
 
@@ -11,8 +13,9 @@ struct estado{
 };
 
 struct nodo{
-    char* cadena;
+    char cadena[100];
     int* recorrido;
+    Estado* siguiente;
 };
 
 typedef struct lista{
@@ -25,7 +28,22 @@ Estado* crearEstados(char*alfabeto, int estadoInicial, int *estados, int estadoL
 void inicializarTransiciones(Lista* lista);
 int posicionDeCaracter(char letra, char* alfabeto);
 Estado* direccionDeEstadoDestino(Lista* lista, int destinoID);
+Nodo* crearNodo(char palabra[100]);
+void recorrerEstados(Nodo* nodo, Estado* initialState);
 
+void recorrerEstados(Nodo* nodo, Estado* initialState){
+  nodo->siguiente = initialState;
+  
+}
+
+
+Nodo* crearNodo(char palabra[100]){
+  Nodo* nodo = (Nodo*)malloc(sizeof(Nodo));
+  strcpy(nodo->cadena, palabra);
+  nodo->recorrido = (int*)malloc(sizeof(int)*strlen(palabra));
+  nodo->siguiente = NULL;
+  return nodo;
+}
 
 void insertarFinal(Lista* lista, int ID){
   Estado* estado = crearEstado(ID);
@@ -44,12 +62,13 @@ Estado* crearEstados(char* alfabeto, int estadoInicial, int *estados, int estado
   Lista* lista = (Lista*)malloc(sizeof(Lista));
   Estado* initialState;
   Estado* punteroAux;
-
+  Estado* zombie;
   lista->cabeza = NULL;
 
   for (size_t i = 0; i < estadoLength; i++) {
     insertarFinal(lista, estados[i]);
   }
+  zombie = crearEstado(101);
 
   initialState = lista->cabeza;
   while ((initialState->estadoID) != estadoInicial) {
@@ -74,6 +93,19 @@ Estado* crearEstados(char* alfabeto, int estadoInicial, int *estados, int estado
   }
 
   //falta crear el estado zombie y vincular las transiciones correspondientes a él
+
+
+
+  punteroAux = lista->cabeza;
+
+  while (punteroAux->apuntadorTemp) {
+    for (size_t l = 0; l < strlen(alfabeto); l++) {
+      if (punteroAux->transiciones[0][l] == NULL) {
+        punteroAux->transiciones[0][l] = zombie;
+      }
+    }
+    punteroAux = punteroAux->apuntadorTemp;
+  }
 
   return initialState;
 }
