@@ -7,14 +7,14 @@
 
 int main(int argc, char const *argv[]){
   char cadena[100];
-  printf("Por favor ingrese la cadena que desea validar.\n");
-  scanf("%s", cadena);
+  //printf("Por favor ingrese la cadena que desea validar.\n");
+  //scanf("%s", cadena);
 
   char *alfabeto, *transition;
   int *estados,  estadoInicial, *estadosFinales,  *estadosOrigen, *estadosDestino;
   int estadoLength, estadosFinalesLength, origenLength, destinoLength;
   LeerArchivo(&alfabeto, &transition, &estados, &estadoInicial, &estadosFinales, &estadosOrigen, &estadosDestino, &estadoLength, &estadosFinalesLength, &origenLength, &destinoLength);
-  crearEstados(estadoInicial, estados, estadoLength, transition, estadosOrigen, estadosDestino, origenLength, destinoLength);
+  crearEstados(alfabeto, estadoInicial, estados, estadoLength, transition, estadosOrigen, estadosDestino, origenLength, destinoLength);
   /*
   printf("Conjunto de estados ");
   for (size_t i = 0; i < estadoLength; i++) {
