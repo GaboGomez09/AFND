@@ -29,13 +29,36 @@ void inicializarTransiciones(Lista* lista);
 int posicionDeCaracter(char letra, char* alfabeto);
 Estado* direccionDeEstadoDestino(Lista* lista, int destinoID);
 Nodo* crearNodo(char palabra[100]);
-void recorrerEstados(Nodo* nodo, Estado* initialState);
+void recorrerEstados(Nodo* nodo, Estado* initialState, char* alfabeto);
+Nodo* clonarNodo(Nodo* nodo);
 
-void recorrerEstados(Nodo* nodo, Estado* initialState){
+void recorrerEstados(Nodo* nodo, Estado* initialState, char* alfabeto){
   nodo->siguiente = initialState;
-  
+  int numeroDeDirecciones, posicion, j;
+  for (size_t i = 0; i < strlen(nodo->cadena); i++) {
+
+    posicion = posicionDeCaracter(cadena[i], alfabeto);
+    numeroDeDirecciones = 0;
+    j = 0;
+    while (nodo->siguiente->transiciones[k][posicion] != NULL) {
+      numeroDeDirecciones++;
+    }
+
+    if (numeroDeDirecciones == 1) {
+
+    }else{
+      recorrerEstados(clonarNodo, nodo->siguiente, alfabeto);
+    }
+    
+  }
 }
 
+Nodo* clonarNodo(Nodo* nodo){
+  Nodo* clon = crearNodo(nodo->cadena);
+  for (size_t i = 0; i < strlen(nodo->cadena); i++) {
+    clon->recorrido[i] = nodo->recorrido[i];
+  }
+}
 
 Nodo* crearNodo(char palabra[100]){
   Nodo* nodo = (Nodo*)malloc(sizeof(Nodo));
@@ -92,9 +115,6 @@ Estado* crearEstados(char* alfabeto, int estadoInicial, int *estados, int estado
     punteroAux = punteroAux->apuntadorTemp;
   }
 
-  //falta crear el estado zombie y vincular las transiciones correspondientes a él
-
-
 
   punteroAux = lista->cabeza;
 
@@ -106,6 +126,11 @@ Estado* crearEstados(char* alfabeto, int estadoInicial, int *estados, int estado
     }
     punteroAux = punteroAux->apuntadorTemp;
   }
+
+  for (size_t z = 0; z < 100; z++) {
+    zombie->transiciones[0][z] = zombie;
+  }
+
 
   return initialState;
 }

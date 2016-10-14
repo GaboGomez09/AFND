@@ -22,7 +22,7 @@ int main(int argc, char const *argv[]){
   initialState = crearEstados(alfabeto, estadoInicial, estados, estadoLength, transition, estadosOrigen, estadosDestino, origenLength, destinoLength);
 
 
-  recorrerEstados(nodo, initialState);
+  //recorrerEstados(nodo, initialState, alfabeto);
 
   return 0;
 }
