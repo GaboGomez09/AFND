@@ -18,11 +18,14 @@ int main(int argc, char const *argv[]){
   LeerArchivo(&alfabeto, &transition, &estados, &estadoInicial, &estadosFinales, &estadosOrigen, &estadosDestino, &estadoLength, &estadosFinalesLength, &origenLength, &destinoLength);
 
 
+  char *newalfabeto = (char*)malloc(strlen(alfabeto));
+  strcpy(newalfabeto,alfabeto);
+
   Estado* initialState;
   initialState = crearEstados(alfabeto, estadoInicial, estados, estadoLength, transition, estadosOrigen, estadosDestino, origenLength, destinoLength);
 
 
-  //recorrerEstados(nodo, initialState, alfabeto);
+  recorrerEstados(nodo, initialState, newalfabeto, estadosFinales, estadosFinalesLength);
 
   return 0;
 }

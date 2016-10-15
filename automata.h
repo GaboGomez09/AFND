@@ -14,6 +14,7 @@ struct estado{
 
 struct nodo{
     char cadena[100];
+    int posicionCadena;
     int* recorrido;
     Estado* siguiente;
 };
@@ -29,28 +30,65 @@ void inicializarTransiciones(Lista* lista);
 int posicionDeCaracter(char letra, char* alfabeto);
 Estado* direccionDeEstadoDestino(Lista* lista, int destinoID);
 Nodo* crearNodo(char palabra[100]);
-void recorrerEstados(Nodo* nodo, Estado* initialState, char* alfabeto);
+void recorrerEstados(Nodo* nodo, Estado* estadoActual, char* alfabeto, int* estadosFinales, int estadosFinalesLength);
 Nodo* clonarNodo(Nodo* nodo);
 
-void recorrerEstados(Nodo* nodo, Estado* initialState, char* alfabeto){
-  nodo->siguiente = initialState;
-  int numeroDeDirecciones, posicion, j;
-  for (size_t i = 0; i < strlen(nodo->cadena); i++) {
+void recorrerEstados(Nodo* nodo, Estado* estadoActual, char* alfabeto, int* estadosFinales, int estadosFinalesLength){
+  nodo->siguiente = estadoActual;
+  int numeroDeDirecciones = 0, posicion;
 
-    posicion = posicionDeCaracter(cadena[i], alfabeto);
-    numeroDeDirecciones = 0;
-    j = 0;
-    while (nodo->siguiente->transiciones[k][posicion] != NULL) {
+  if (nodo->posicionCadena == (strlen(nodo->cadena)-1)) {
+    int existe = 0;
+    for (size_t i = 0; i < estadosFinalesLength; i++) {
+      if (nodo->recorrido[nodo->posicionCadena] == estadosFinales[i]) {
+        existe = 1;
+      }
+    }
+    if (existe) {
+      printf("[");
+      for (size_t i = 0; i < strlen(nodo->cadena); i++) {
+        printf(" %d ", nodo->recorrido[i]);
+      }
+      printf("]\n");
+    }
+  } else {
+    nodo->recorrido[nodo->posicionCadena] = nodo->siguiente->estadoID;
+    posicion = posicionDeCaracter(nodo->cadena[nodo->posicionCadena], alfabeto);
+
+    while (nodo->siguiente->transiciones[numeroDeDirecciones][posicion] != NULL) {
       numeroDeDirecciones++;
     }
+    numeroDeDirecciones++;
+
+    nodo->posicionCadena++;
+    Nodo* Newnodo = (Nodo*)malloc(1000);
+
+    /*Nodo* clon = clonarNodo(nodo);
+    clon->posicionCadena++;
+    for (size_t i = 0; i < numeroDeDirecciones; i++) {
+      recorrerEstados(clon, nodo->siguiente->transiciones[i][posicion], alfabeto, estadosFinales, estadosFinalesLength);
+    }*/
+
+  }
+
+  /*
+  for (size_t i = 0; i < strlen(nodo->cadena); i++) {
+
+    posicion = posicionDeCaracter(nodo->cadena[i], alfabeto);
+    numeroDeDirecciones = 0;
+
+
+
 
     if (numeroDeDirecciones == 1) {
 
     }else{
       recorrerEstados(clonarNodo, nodo->siguiente, alfabeto);
     }
-    
+
   }
+  */
+
 }
 
 Nodo* clonarNodo(Nodo* nodo){
@@ -58,6 +96,7 @@ Nodo* clonarNodo(Nodo* nodo){
   for (size_t i = 0; i < strlen(nodo->cadena); i++) {
     clon->recorrido[i] = nodo->recorrido[i];
   }
+  clon->posicionCadena = nodo->posicionCadena;
 }
 
 Nodo* crearNodo(char palabra[100]){
@@ -65,6 +104,7 @@ Nodo* crearNodo(char palabra[100]){
   strcpy(nodo->cadena, palabra);
   nodo->recorrido = (int*)malloc(sizeof(int)*strlen(palabra));
   nodo->siguiente = NULL;
+  nodo->posicionCadena = 0;
   return nodo;
 }
 
